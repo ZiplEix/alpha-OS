@@ -63,7 +63,7 @@ PrintDone:
 
 ReadSectors:
     .MAIN:
-        mov     di, 0x005                           ; Number of retries (5)
+        mov     di, 0x0005                           ; Number of retries (5)
     .SECTORLOOP:
         push    ax
         push    bx
@@ -102,7 +102,7 @@ ReadSectors:
 ;***************************************************
 
 ClusterLBA:
-    sub     ax, 2                                   ; zero based sector number
+    sub     ax, 0x0002                              ; zero based sector number
     xor     cx, cx
     mov     cl, BYTE [bpbSectorsPerCluster]         ; converte byte to word
     mul     cx                                      ; AX = AX * CX
@@ -124,6 +124,7 @@ LBACHS:
     inc     dl                                      ; adjust for sector 0
     mov     BYTE [absoluteSector], dl               ; save the sector
     xor     dx, dx                                  ; prepare dx for operation
+    div     WORD [bpbHeadsPerCylinder]              ; calculate ax / bpbHeadsPerCylinder
     mov     BYTE [absoluteHead], dl                 ; head number
     mov     BYTE [absoluteTrack], al                ; track number
     ret
