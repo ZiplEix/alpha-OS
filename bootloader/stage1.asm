@@ -186,6 +186,7 @@ main:
         ; browse root directory for binary image
         mov     cx, WORD [bpbRootEntries]           ; load loop counter with number of root directory entries
         mov     di, 0x0200                          ; point di to first root entry
+
     .LOOP:
         push    cx
         mov     cx, 0x000B                          ; compare first 11 bytes of filename
@@ -289,7 +290,7 @@ main:
     ImageName   db "KRNLDR  SYS"
     msgLoading  db 0x0D, 0x0A, "Loading Boot Image ", 0x0D, 0x0A, 0x00
     msgCRLF     db 0x0D, 0x0A, 0x00
-    msgProgress db ".", 0x00
+    msgProgress db ".", 0x0D, 0x0A, 0x00
     msgFailure  db 0x0D, 0x0A, "ERROR : Press Any Key to Reboot", 0x0A, 0x00
 
     times 510-($-$$) db 0
