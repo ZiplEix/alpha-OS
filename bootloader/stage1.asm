@@ -273,7 +273,7 @@ main:
         call    Print
         push    WORD 0x0050
         push    WORD 0x0000
-        ret
+        retf
 
     FAILURE:
         mov     si, msgFailure
