@@ -291,7 +291,7 @@ main:
     ImageName   db "KRNLDR  SYS"
     msgLoading  db 0x0D, 0x0A, "Loading Boot Image ", 0x0D, 0x0A, 0x00
     msgCRLF     db 0x0D, 0x0A, 0x00
-    msgProgress db ".", 0x0D, 0x0A, 0x00
+    msgProgress db ".", 0x00
     msgFailure  db 0x0D, 0x0A, "ERROR : Press Any Key to Reboot", 0x0A, 0x00
 
     times 510-($-$$) db 0
