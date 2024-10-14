@@ -27,7 +27,7 @@ echo ""
 echo "== Creating image =="
 dd if=/dev/zero of=$IMAGE bs=512 count=2880
 dd if=$STAGE1_BIN of=$IMAGE bs=512 count=1 conv=notrunc
-dd if=$STAGE1_BIN of=$IMAGE bs=1 skip=62 seek=62 conv=notrunc
+# dd if=$STAGE1_BIN of=$IMAGE bs=1 skip=62 seek=62 conv=notrunc
 echo " - $STAGE1 added to image"
 
 mcopy -i $IMAGE $STAGE2_BIN ::$STAGE2_FILE_NAME
