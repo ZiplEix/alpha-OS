@@ -1,0 +1,5 @@
+floppya: 1_44="C:/Users/leroy/Desktop/floppy.img", status=inserted
+
+boot: a                      # Boot from floppy
+debug: true                  # Enable debug mode
+log: bochslog.log            # Log file output
