@@ -8,7 +8,7 @@
 %ifndef __GDT_INC__
 %define __GDT_INC__
 
-bit     16
+bits    16
 
 ;**********************************************************
 ;       InstallGDT()
@@ -31,7 +31,7 @@ gdt_data:
     dd      0                                   ; null descriptor
     dd      0
 
-gdt_code:
+; gdt code:
     dw      0FFFFH                              ; limit low
     dw      0                                   ; base low
     db      0                                   ; base middle
@@ -39,7 +39,7 @@ gdt_code:
     db      11001111b                           ; granularity
     db      0                                   ; base high
 
-gdt_data:
+; gdt data:
     dw      0FFFFH                              ; limit low
     dw      0                                   ; base low
     db      0                                   ; base middle

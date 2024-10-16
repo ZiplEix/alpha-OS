@@ -5,48 +5,96 @@
 ;      - By Baptiste Leroyer
 ;***************************************************
 
-org 0x0                                             ; offset to 0, set the segment later
+bits    16
 
-bits 16                                             ; still in real mode
+; 0x500 through 0x7DFF is unused above the BIOS data area
+; current instruction is loaded at 0x500
 
-; Loaded at linear adress 0x100000
+org     0x500
 
-jmp main
-
-;***************************************************
-;    Print a string
-;    SI = pointer to string
-;    DS=>SI: 0 terminated string
-;***************************************************
-
-Print:
-    lodsb                   ; load next byte from si to al
-    or al, al               ; Check if the character is null
-    jz PrintDone
-    mov ah, 0eh             ; get next character
-    int 10h                 ; call BIOS video interrupt
-    jmp Print
-
-PrintDone:
-    ret
+jmp     main                                    ; Go to start
 
 ;***************************************************
-;    Second stage loader entry point
+;       Preprocessor directives
+;***************************************************
+
+%include "routines/stdio.inc"                   ; basic i/o routines
+%include "routines/gdt.inc"                     ; GDT routines
+
+;***************************************************
+;       Data Section
+;***************************************************
+
+LoadingMsg  db  "Preparing to load operating system...", 0x0D, 0x0A, 0x00
+DebugMsg1   db  "Debug A", 0x0D, 0x0A, 0x00
+DebugMsg2   db  "Debug B", 0x0D, 0x0A, 0x00
+
+;***************************************************
+;       STAGE 2 ENTRY POINT
+;
+;           - Store BIOS infos
+;           - Load Kernel
+;           - Install GDT; go into PMode
+;           - Jump to Stage 3
 ;***************************************************
 
 main:
-    cli                     ; disable interrupts
-    push    cs              ; ensure DS=CS
-    pop     ds
+    ;-------------------------------------------
+    ;   Setup Segments and stack
+    ;-------------------------------------------
+    cli                                         ; Disable and clear interrupts
+    xor     ax, ax                              ; null segments
+    mov     ds, ax
+    mov     es, ax
+    mov     ax, 0x9000                          ; stack begin at 0x9000-0xffff
+    mov     ss, ax
+    mov     sp, 0xFFFF
+    sti                                         ; Enable interrupts
 
-    mov     si, Msg
-    call    Print
+    ;-------------------------------------------
+    ;   Display loading message
+    ;-------------------------------------------
+    mov     si, LoadingMsg
+    call    Puts16
 
+    ;-------------------------------------------
+    ;   Install GDT
+    ;-------------------------------------------
+    call    InstallGDT
+
+    ;-------------------------------------------
+    ;   Go into pmode
+    ;-------------------------------------------
+    cli                                         ; Disable and clear interrupts
+    mov     eax, cr0                            ; set bit 0 in cr0 --enter pmode
+    or      eax, 1
+    mov     cr0, eax
+
+    jmp     08h:Stage3                          ; far jump to fix CS. Code selector is 0x8
+
+    ; DO NOT BY ANY MEANS RE-ANABLE INTERRUPTS ! DOING SO WILL TRIPLE FAULT THE CPU !!!!!!
+    ; will be fix in Stage 3 (hopefully...)
+
+;***************************************************
+;      ENTRY POINT FOR STAGE 3
+;***************************************************
+
+bits    32                                      ; Finally in 32 bits mode !!
+
+Stage3:
+    ;-------------------------------------------
+    ;       Set registers
+    ;-------------------------------------------
+    mov     ax, 0x10                            ; Set data segments to data selector (0x10)
+    mov     ds, ax
+    mov     ss, ax
+    mov     es, ax
+    mov     esp, 90000h                         ; Set stack pointer to 0x90000
+
+;***************************************************
+;       Stop execution
+;***************************************************
+
+STOP:
     cli
     hlt
-
-;***************************************************
-;    Data section
-;***************************************************
-
-Msg	    db  "Preparing to load operating system...", 13, 10,0
