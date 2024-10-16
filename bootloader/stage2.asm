@@ -20,6 +20,7 @@ jmp     main                                    ; Go to start
 
 %include "routines/stdio.inc"                   ; basic i/o routines
 %include "routines/gdt.inc"                     ; GDT routines
+%include "routines/A20.inc"                     ; A20 routines
 
 ;***************************************************
 ;       Data Section
@@ -61,6 +62,11 @@ main:
     ;   Install GDT
     ;-------------------------------------------
     call    InstallGDT
+
+    ;-------------------------------------------
+    ;   Enable A20
+    ;-------------------------------------------
+    call    EnableA20_KKbrd
 
     ;-------------------------------------------
     ;   Go into pmode
