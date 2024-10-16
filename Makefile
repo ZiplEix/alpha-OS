@@ -8,30 +8,19 @@ IMAGE_NAME = "VMs/floppy.img"
 WINDOWS_BOCHS_PATH = "/mnt/c/Program\ Files/Bochs-2.8/bochs.exe"
 WINDOWS_IMAGE_PATH = C:/Users/leroy/Documents/OS/floppy.img
 WINDOWS_IMAGE_PATH_ABSOLUTE = "/mnt/c/Users/leroy/Documents/OS/"
-# QUIET = "-q"
 
 # targets
 all: build_bootloader run
 
 build_bootloader:
-	@./build_bootloader.sh ${QUIET} ${STAGE1} ${STAGE2} ${STAGE1_BIN_NAME} ${STAGE2_BIN_NAME} ${IMAGE_NAME}
+	@./build_bootloader.sh ${STAGE1} ${STAGE2} ${STAGE1_BIN_NAME} ${STAGE2_BIN_NAME} ${IMAGE_NAME}
 
 run:
 	@echo "Launching QEMU..."
 	@qemu-system-x86_64 -drive format=raw,file=${IMAGE_NAME},if=floppy -boot a -net none
 
 debug: build_bootloader
-	@echo "=============================="
-	@echo "   Launching BOCHS in Debug   "
-	@echo "=============================="
-	@cp ${IMAGE_NAME} ${WINDOWS_IMAGE_PATH_ABSOLUTE}
-	@echo "Successfully copied image to Windows path: [${WINDOWS_IMAGE_PATH_ABSOLUTE}]"
-	@echo ""
-	@echo "To launch BOCHS, run the following command:"
-	@echo ""
-	@echo "   /mnt/c/Program\\ Files/Bochs-2.8/bochs.exe -f bochsrc.txt"
-	@echo ""
-	@echo "=============================="
+	@./debug.sh ${IMAGE_NAME} ${WINDOWS_IMAGE_PATH_ABSOLUTE}
 
 clean:
 	@echo "Cleaning up..."
