@@ -52,4 +52,12 @@ toc:
     dw      end_of_gdt - gdt_data - 1           ; limit (size of the GDT)
     dd      gdt_data                            ; base of the GDT
 
+;**********************************************************
+;       Explicite descriptor offset names
+;**********************************************************
+
+%define NULL_DESC 0
+%define CODE_DESC 0x8
+%define DATA_DESC 0x10
+
 %endif  ; __GDT_INC__
