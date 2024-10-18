@@ -20,13 +20,13 @@ jmp     main                                    ; Go to start
 
 %include "routines/stdio.inc"                   ; basic i/o routines
 %include "routines/gdt.inc"                     ; GDT routines
-%include "routines/A20.inc"                     ; A20 routines
+%include "routines/A20.inc"                     ; A20 activation routines
 
 ;***************************************************
 ;       Data Section
 ;***************************************************
 
-LoadingMsg  db  "Preparing to load operating system...", 0x0D, 0x0A, 0x00
+LoadingMsg  db  "Searching for Operating System...", 0x0D, 0x0A, 0x00
 DebugMsg1   db  "Debug A", 0x0D, 0x0A, 0x00
 DebugMsg2   db  "Debug B", 0x0D, 0x0A, 0x00
 
@@ -53,12 +53,6 @@ main:
     sti                                         ; Enable interrupts
 
     ;-------------------------------------------
-    ;   Display loading message
-    ;-------------------------------------------
-    mov     si, LoadingMsg
-    call    Puts16
-
-    ;-------------------------------------------
     ;   Install GDT
     ;-------------------------------------------
     call    InstallGDT
@@ -69,14 +63,21 @@ main:
     call    EnableA20_KKbrd
 
     ;-------------------------------------------
+    ;   Display loading message
+    ;-------------------------------------------
+    mov     si, LoadingMsg
+    call    Puts16
+
+    ;-------------------------------------------
     ;   Go into pmode
     ;-------------------------------------------
+EnterStage3:
     cli                                         ; Disable and clear interrupts
     mov     eax, cr0                            ; set bit 0 in cr0 --enter pmode
     or      eax, 1
     mov     cr0, eax
 
-    jmp     08h:Stage3                          ; far jump to fix CS. Code selector is 0x8
+    jmp     CODE_DESC:Stage3                          ; far jump to fix CS. Code selector is 0x8
 
     ; DO NOT BY ANY MEANS RE-ANABLE INTERRUPTS ! DOING SO WILL TRIPLE FAULT THE CPU !!!!!!
     ; will be fix in Stage 3 (hopefully...)
@@ -91,11 +92,18 @@ Stage3:
     ;-------------------------------------------
     ;       Set registers
     ;-------------------------------------------
-    mov     ax, 0x10                            ; Set data segments to data selector (0x10)
+    mov     ax, DATA_DESC                            ; Set data segments to data selector (0x10)
     mov     ds, ax
     mov     ss, ax
     mov     es, ax
     mov     esp, 90000h                         ; Set stack pointer to 0x90000
+
+    ;-------------------------------------------
+    ;       Clear screen and print success
+    ;-------------------------------------------
+    call    ClrScr32
+    mov     ebx, msg
+    call    Puts32
 
 ;***************************************************
 ;       Stop execution
@@ -104,3 +112,7 @@ Stage3:
 STOP:
     cli
     hlt
+
+msg db  0x0A, 0x0A, 0x0A, "               <[ AlphaOS Bootloader ]>"
+    db  0x0A, 0x0A,             "           Hello World !", 0
+    
