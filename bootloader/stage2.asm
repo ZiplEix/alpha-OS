@@ -113,5 +113,5 @@ STOP:
     cli
     hlt
 
-msg db  0x0A, 0x0A, 0x0A, "               <[ AlphaOS Bootloader ]>"
-    db  0x0A, 0x0A,             "           Hello World !", 0
+msg db  0x0A, 0x0A, 0x0A,   "               <[ AlphaOS Bootloader ]>"
+    db  0x0A, 0x0A,         "                    Hello World !", 0
