@@ -206,8 +206,8 @@ main:
     ;---------------------------------------------------
     LOAD_FAT:
         ; save starting cluster of boot image
-        mov     si, msgCRLF
-        call    Print
+        ; mov     si, msgCRLF
+        ; call    Print
         mov     dx, WORD [di + 0x001A]              ; get starting cluster number
         mov     WORD [cluster], dx                  ; file's first cluster
 
@@ -225,8 +225,8 @@ main:
         call    ReadSectors
 
         ; read image file into memory at 0050:0000
-        mov     si, msgCRLF
-        call    Print
+        ; mov     si, msgCRLF
+        ; call    Print
         mov     ax, 0x0050
         mov     es, ax                              ; destination for image
         mov     bx, 0x0000                          ; copy image to 0050:0000
@@ -292,7 +292,7 @@ main:
     msgLoading  db 0x0D, 0x0A, "Loading Boot Image ", 0x0D, 0x0A, 0x00
     msgCRLF     db 0x0D, 0x0A, 0x00
     msgProgress db ".", 0x00
-    msgFailure  db 0x0D, 0x0A, "ERROR : Press Any Key to Reboot", 0x0A, 0x00
+    msgFailure  db 0x0D, 0x0A, "MISSING OR CURRUPT KRNLDR. Press Any Key to Reboot", 0x0D, 0x0A, 0x00
 
     times 510-($-$$) db 0
     dw 0xAA55
