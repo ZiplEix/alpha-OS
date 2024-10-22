@@ -18,15 +18,18 @@ jmp     main                                    ; Go to start
 ;       Preprocessor directives
 ;***************************************************
 
-%include "routines/stdio.inc"                   ; basic i/o routines
-%include "routines/gdt.inc"                     ; GDT routines
-%include "routines/A20.inc"                     ; A20 activation routines
+%include "stdio.inc"                   ; basic i/o routines
+%include "gdt.inc"                     ; GDT routines
+%include "A20.inc"                     ; A20 activation routines
+%include "Fat12.inc"                   ; FAT12 routines
+%include "common.inc"                  ; common definition
 
 ;***************************************************
 ;       Data Section
 ;***************************************************
 
 LoadingMsg  db  "Searching for Operating System...", 0x0D, 0x0A, 0x00
+msgFailure  db 0x0D, 0x0A, "*** FATAL: MISSING OR CURRUPT KRNLDR.SYS. Press Any Key to Reboot", 0x0D, 0x0A, 0x0A, 0x00
 DebugMsg1   db  "Debug A", 0x0D, 0x0A, 0x00
 DebugMsg2   db  "Debug B", 0x0D, 0x0A, 0x00
 
@@ -69,6 +72,29 @@ main:
     call    Puts16
 
     ;-------------------------------------------
+    ;   Initialize filesysteme
+    ;-------------------------------------------
+    call    LoadRoot                            ; Load root directory table
+
+    ;-------------------------------------------
+    ;   Load Kernel
+    ;-------------------------------------------
+    mov     ebx, 0                              ; BX:BP points to buffer to load to
+    mov     bp, IMAGE_RMODE_BASE
+    mov     si, ImageName
+    call    LoadFile                            ; Load the file
+    mov     dword [ImageSize], ecx              ; Store the size of the file
+    cmp     ax, 0                               ; check for success
+    je      EnterStage3                         ; Yep jump to stage 3
+    mov     si, msgFailure
+    call    Puts16
+    mov     ah, 0
+    int     0x16                                ; Wait for a key
+    int     0x19                                ; Reboot
+    cli
+    hlt
+
+    ;-------------------------------------------
     ;   Go into pmode
     ;-------------------------------------------
 EnterStage3:
@@ -101,9 +127,33 @@ Stage3:
     ;-------------------------------------------
     ;       Clear screen and print success
     ;-------------------------------------------
-    call    ClrScr32
-    mov     ebx, msg
-    call    Puts32
+    ; call    ClrScr32
+    ; mov     ebx, msg
+    ; call    Puts32
+
+    ;-------------------------------------------
+    ;       Copy kernel to 1MB
+    ;-------------------------------------------
+    CopyImage:
+        mov     eax, dword [ImageSize]
+        movzx   ebx, word [bpbBytesPerSector]
+        mul     ebx
+        mov     ebx, 4
+        div     ebx
+        cld
+        mov     esi, IMAGE_RMODE_BASE
+        mov     edi, IMAGE_PMODE_BASE
+        mov     ecx, eax
+        rep     movsb                           ; Copy image to its protected mode address
+
+        call    ClrScr32
+        mov     ebx, DebugMsg1
+        call    Puts32
+
+    ;-------------------------------------------
+    ;       Jump to kernel
+    ;-------------------------------------------
+    jmp     CODE_DESC:IMAGE_PMODE_BASE
 
 ;***************************************************
 ;       Stop execution

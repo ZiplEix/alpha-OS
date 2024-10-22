@@ -19,6 +19,15 @@ STAGE2_BIN=$4
 IMAGE=$5
 STAGE2_FILE_NAME=$(basename "$STAGE2_BIN")
 
+echo "STAGE1: $STAGE1"
+echo "STAGE2: $STAGE2"
+echo "STAGE1_BIN: $STAGE1_BIN"
+echo "STAGE2_BIN: $STAGE2_BIN"
+echo "IMAGE: $IMAGE"
+echo "STAGE2_FILE_NAME: $STAGE2_FILE_NAME"
+
+exit 0
+
 echo "=============================="
 echo "      Building Bootloader      "
 echo "=============================="
