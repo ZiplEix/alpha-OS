@@ -50,7 +50,7 @@ main:
     xor     ax, ax                              ; null segments
     mov     ds, ax
     mov     es, ax
-    mov     ax, 0x9000                          ; stack begin at 0x9000-0xffff
+    mov     ax, 0x0                             ; stack begin at 0x9000-0xffff
     mov     ss, ax
     mov     sp, 0xFFFF
     sti                                         ; Enable interrupts
@@ -144,7 +144,7 @@ Stage3:
         mov     esi, IMAGE_RMODE_BASE
         mov     edi, IMAGE_PMODE_BASE
         mov     ecx, eax
-        rep     movsb                           ; Copy image to its protected mode address
+        rep     movsd                           ; Copy image to its protected mode address
 
         call    ClrScr32
         mov     ebx, DebugMsg1
@@ -153,6 +153,9 @@ Stage3:
     ;-------------------------------------------
     ;       Jump to kernel
     ;-------------------------------------------
+    mov     eax, CODE_DESC
+    mov     ebx, IMAGE_PMODE_BASE
+
     jmp     CODE_DESC:IMAGE_PMODE_BASE
 
 ;***************************************************

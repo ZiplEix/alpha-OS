@@ -1,4 +1,4 @@
-floppya: 1_44="C:/Users/leroy/Desktop/floppy.img", status=inserted
+floppya: 1_44="C:\Users\leroy\Documents\OS\floppy.img", status=inserted
 
 boot: a                      # Boot from floppy
 log: bochslog.log            # Log file output

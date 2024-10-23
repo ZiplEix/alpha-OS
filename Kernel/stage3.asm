@@ -30,8 +30,8 @@ Stage3:
     mov     ebx, msg
     call	Puts32
 
-    .infiniteloop:
-        jmp .infiniteloop
+    ; .infiniteloop:
+    ;     jmp .infiniteloop
 
     ;-------------------------------------------
     ;   Stop execution

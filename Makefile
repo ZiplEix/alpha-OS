@@ -2,6 +2,7 @@
 # vars and consts
 STAGE1_BIN_NAME = bootloader/stage1/Boot1.bin
 STAGE2_BIN_NAME = bootloader/stage2/KRNLDR.SYS
+STAGE3_BIN_NAME = Kernel/KERNEL.SYS
 IMAGE_NAME = floppy.img
 IMAGE_PATH = VMs/${IMAGE_NAME}
 WINDOWS_IMAGE_PATH_ABSOLUTE = /mnt/c/Users/leroy/Documents/OS
@@ -19,18 +20,20 @@ build_image:
 	dd if=/dev/zero of=${IMAGE_PATH} bs=512 count=2880
 	dd if=${STAGE1_BIN_NAME} of=${IMAGE_PATH} bs=512 count=1 conv=notrunc
 	mcopy -i "${IMAGE_PATH}" "${STAGE2_BIN_NAME}" ::"KRNLDR.SYS"
-	mcopy -i "${IMAGE_PATH}" "Kernel/KERNEL.SYS" ::"KERNEL.SYS"
+	mcopy -i "${IMAGE_PATH}" "${STAGE3_BIN_NAME}" ::"KERNEL.SYS"
 
 run:
 	@echo "Launching QEMU..."
-	@qemu-system-x86_64 -drive format=raw,file=${IMAGE_PATH},if=floppy -boot a -net none
+	@qemu-system-x86_64 -drive format=raw,file=${IMAGE_PATH},if=floppy -boot a -net none -d int,cpu_reset
 
-debug: build_bootloader
+debug: build_bootloader build_kernel build_image
 	@./debug.sh ${IMAGE_PATH} ${WINDOWS_IMAGE_PATH_ABSOLUTE}
 
 clean:
 	@echo "Cleaning up..."
-	@rm -f ${STAGE1_BIN_NAME} ${STAGE2_BIN_NAME}
+	@rm -f ${STAGE1_BIN_NAME}
+	@rm -f ${STAGE2_BIN_NAME}
+	@rm -f ${STAGE3_BIN_NAME}
 
 fclean: clean
 	@echo "Cleaning up all..."
