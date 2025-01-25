@@ -1,7 +1,18 @@
-ORG     0x7c00
+ORG     0
 BITS    16
 
+jmp     0x07C0:start                        ; Jump to the start of the boot loader
+
 start:
+    cli                                     ; Disable interrupts
+    mov     ax, 0x07C0
+    mov     ds, ax
+    mov     es, ax
+    mov     ax, 0x00
+    mov     ss, ax
+    mov     sp, 0x7C00
+    sti                                     ; Enable interrupts
+
     mov     si, message
     call    print
     jmp     $
@@ -24,7 +35,7 @@ print_char:
     int     0x10
     ret
 
-message: db "Hello, World f!", 0
+message: db "Hello, World !", 0
 
 times 510-($-$$) db 0
 dw      0xAA55
