@@ -1,5 +1,1 @@
-# Bootloader :
 *.bin
-VMs/*.img
-*.SYS
-*.log
