@@ -1,9 +1,17 @@
 ORG     0
 BITS    16
 
-jmp     0x07C0:start                        ; Jump to the start of the boot loader
+; BIOS parameter block
+_start:
+    jmp     short start
+    nop
+
+times 33 db 0                               ; 33 bytes of padding to simulate the BIOS parameter block (all fake datas)
 
 start:
+    jmp     0x07C0:step2                    ; Jump to the start of the boot loader
+
+step2:
     cli                                     ; Disable interrupts
     mov     ax, 0x07C0
     mov     ds, ax
