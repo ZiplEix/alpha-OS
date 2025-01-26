@@ -1,5 +1,8 @@
-ORG     0
+ORG     0x7c00
 BITS    16
+
+CODE_SEG equ gdt_code - gdt_start
+DATA_SEG equ gdt_data - gdt_start
 
 ; BIOS parameter block
 _start:
@@ -9,59 +12,66 @@ _start:
 times 33 db 0                               ; 33 bytes of padding to simulate the BIOS parameter block (all fake datas)
 
 start:
-    jmp     0x07C0:step2                    ; Jump to the start of the boot loader
+    jmp     0:step2                    ; Jump to the start of the boot loader
 
 step2:
     cli                                     ; Disable interrupts
-    mov     ax, 0x07C0
+    mov     ax, 0x00
     mov     ds, ax
     mov     es, ax
-    mov     ax, 0x00
     mov     ss, ax
     mov     sp, 0x7C00
     sti                                     ; Enable interrupts
 
-    mov     ah, 2 ; read sector command
-    mov     al, 1 ; one sector to read
-    mov     ch, 0 ; cylinder low eight bits
-    mov     cl, 2 ; sector numbercl, 2 ; read sector 2
-    mov     dh, 0 ; head number
-    mov     bx, buffer
-    int     0x13 ; call BIOS (read on hard drive)
-    jc      error
+.load_protected:
+    cli
+    lgdt[gdt_descriptor]
+    mov     eax, cr0
+    or      eax, 0x1
+    mov     cr0, eax
+    jmp     CODE_SEG:load32
 
-    mov     si, buffer
-    call    print
+; GDT
+gdt_start:
+gdt_null:
+    dd      0x0
+    dd      0x0
 
-    jmp     $
+; offset 0x8
+gdt_code:                                   ; CS should point to this, default value
+    dw      0xFFFF                          ; segment limit first 0-15 bits
+    dw      0x0                             ; base first 0-15 bits
+    db      0x0                             ; base 16-23 bits
+    db      0x9a                            ; access byte
+    db      11001111b                       ; high 4 bit flag and the low 4 bit flags
+    db      0x0                             ; base 24-31 bits
 
-error:
-    mov     si, error_message
-    call    print
+; offset 0x10
+gdt_data:                                   ; DS, SS, ES, FS, GS should point to this, default value
+    dw      0xFFFF                          ; segment limit first 0-15 bits
+    dw      0x0                             ; base first 0-15 bits
+    db      0x0                             ; base 16-23 bits
+    db      0x92                            ; access byte
+    db      11001111b                       ; high 4 bit flag and the low 4 bit flags
+    db      0x0                             ; base 24-31 bits
 
-    jmp     $
+gdt_end:
 
-print:
-    mov     bx, 0
+gdt_descriptor:
+    dw      gdt_end - gdt_start - 1
+    dd      gdt_start
 
-    .loop:
-        lodsb
-        cmp     al, 0
-        je      .done
-        call    print_char
-        jmp     .loop
-
-    .done:
-        ret
-
-print_char:
-    mov     ah, 0eh
-    int     0x10
-    ret
-
-error_message: db 'Failed to load sector', 0
+[BITS 32]
+load32:
+    mov     ax, DATA_SEG
+    mov     ds, ax
+    mov     es, ax
+    mov     fs, ax
+    mov     gs, ax
+    mov     ss, ax
+    mov     ebp, 0x00200000
+    mov     esp, ebp
+    jmp $
 
 times 510-($-$$) db 0
 dw      0xAA55
-
-buffer:
