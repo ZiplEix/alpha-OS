@@ -76,6 +76,4 @@ void kernel_main() {
 
     // Init interrupt descriptor table
     idt_init();
-
-    outb(0x60, 0xFF);
 }
