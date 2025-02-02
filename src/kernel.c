@@ -80,4 +80,7 @@ void kernel_main() {
 
     // Init interrupt descriptor table
     idt_init();
+
+    // Enable the systeme interrupts
+    enable_interrupts();
 }
