@@ -2,6 +2,8 @@
     "makefile.configureOnOpen": false,
     "files.associations": {
         "stdint.h": "c",
-        "idt.h": "c"
+        "idt.h": "c",
+        "string.h": "c",
+        "pparser.h": "c"
     }
 }
