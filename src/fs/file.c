@@ -5,6 +5,8 @@
 #include "status.h"
 #include "kernel.h"
 
+#include "fat/fat16.h"
+
 struct filesystem *filesystems[ALPHAOS_MAX_FILESYSTEMS];
 struct file_descriptor *file_descriptors[ALPHAOS_MAX_FILEDESCRIPTORS];
 
@@ -33,7 +35,7 @@ void fs_insert_filesystem(struct filesystem *filesystem)
 
 static void fs_static_load()
 {
-    // fs_insert_filesystem(fat16_init());
+    fs_insert_filesystem(fat16_init());
 }
 
 void fs_load()
