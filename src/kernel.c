@@ -10,6 +10,7 @@
 #include "disk/disk.h"
 #include "fs/pparser.h"
 #include "disk/streamer.h"
+#include "fs/file.h"
 
 uint16_t *video_memory = 0;
 uint16_t terminal_row = 0;
@@ -74,6 +75,9 @@ void kernel_main() {
     // inti the heap
     kheap_init();
 
+    // Init the file system
+    fs_init();
+
     // search and init disks
     disk_search_and_init();
 
@@ -92,10 +96,10 @@ void kernel_main() {
     // Enable the systeme interrupts
     enable_interrupts();
 
-    struct disk_stream *streamer = diskstreamer_new(0);
-    diskstreamer_seek(streamer, 0x201);
-    unsigned char c = 0;
-    diskstreamer_read(streamer, &c, 1);
+    char buf[20];
+    strcpy(buf, "Hello, World!\n");
+
+
     while (1) {
     }
 }

@@ -22,6 +22,21 @@ int strnlen(const char *str, int max)
     return len;
 }
 
+char *strcpy(char *dest, const char *src)
+{
+    char *res = dest;
+
+    while (*src) {
+        *dest = *src;
+        dest++;
+        src++;
+    }
+
+    *dest = '\0';
+
+    return res;
+}
+
 bool isdigit(char c)
 {
     return c >= '0' && c <= '9';
