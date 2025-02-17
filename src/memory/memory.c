@@ -27,3 +27,15 @@ int memcmp(const void *ptr1, const void *ptr2, size_t size)
 
     return 0;
 }
+
+void *memcpy(void *dest, const void *src, size_t size)
+{
+    char *d = (char *) dest;
+    const char *s = (const char *) src;
+
+    while (size--) {
+        *d++ = *s++;
+    }
+
+    return dest;
+}
