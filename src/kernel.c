@@ -100,7 +100,8 @@ void kernel_main() {
     if (fd) {
         print("\nFile opened\n");
         char buf[15];
-        fread(buf, 14, 1, fd);
+        fseek(fd, 2, SEEK_SET);
+        fread(buf, 12, 1, fd);
         buf[14] = 0;
         print(buf);
     }
