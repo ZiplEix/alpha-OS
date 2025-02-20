@@ -11,6 +11,9 @@
 #include "fs/pparser.h"
 #include "disk/streamer.h"
 #include "fs/file.h"
+#include "gdt/gdt.h"
+#include "config.h"
+#include "memory/memory.h"
 
 uint16_t *video_memory = 0;
 uint16_t terminal_row = 0;
@@ -77,10 +80,24 @@ void panic(const char *message)
     }
 }
 
+struct gdt gtd_real[ALPHAOS_TOTAL_GDT_SEGMENTS];
+struct gdt_structured gdt_structured[ALPHAOS_TOTAL_GDT_SEGMENTS] = {
+    {.base = 0x00, .limit = 0x00,       .type = 0x00},                  // NULL Segment
+    {.base = 0x00, .limit = 0xFFFFFFFF, .type = 0x9A},                  // Kernel Code Segment
+    {.base = 0x00, .limit = 0xFFFFFFFF, .type = 0x92},                  // Kernel Data Segment
+};
+
 void kernel_main() {
     terminal_init();
 
     print("Hello, World!\ntest");
+
+    memset(gtd_real, 0, sizeof(gtd_real));
+    gdt_structured_to_gdt(gtd_real, gdt_structured, ALPHAOS_TOTAL_GDT_SEGMENTS);
+
+    // Load the GDT
+    gdt_load(gtd_real, sizeof(gtd_real));
+
 
     // inti the heap
     kheap_init();
