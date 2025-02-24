@@ -54,4 +54,11 @@ $(BUILD)/%.asm.o: $(SRC_DIR)/%.asm
 	$(AS) $(NASMFLAGS_ELF) $< -o $@
 
 clean:
-	@rm -rf $(BIN)/boot.bin $(BIN)/kernel.bin $(BIN)/os.bin $(FILES) $(BUILD)/kernelfull.o
+	@rm -rf $(BIN)/boot.bin $(BIN)/kernel.bin $(FILES) $(BUILD)/kernelfull.o
+
+fclean: clean
+	@rm -rf $(BIN)/os.bin
+
+re: fclean all
+
+.PHONY: all clean fclean re
