@@ -4,6 +4,7 @@
         "stdint.h": "c",
         "idt.h": "c",
         "string.h": "c",
-        "pparser.h": "c"
+        "pparser.h": "c",
+        "paging.h": "c"
     }
 }
