@@ -39,7 +39,7 @@ task_return:
     mov     gs, ax
 
     ; restore the general purpose registers
-    push    dword [ebx + 4]
+    push    dword [ebp + 4]
     call    restore_general_purpose_registers
     add     esp, 4
 
