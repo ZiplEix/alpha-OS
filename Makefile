@@ -62,6 +62,9 @@ fclean: clean programs_clean
 
 re: fclean all
 
+run:
+	@qemu-system-i386 -hda ./bin/os.bin
+
 programs:
 	$(MAKE) -C programs/blank all
 
