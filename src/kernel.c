@@ -15,6 +15,9 @@
 #include "config.h"
 #include "memory/memory.h"
 #include "task/tss.h"
+#include "task/task.h"
+#include "task/process.h"
+#include "status.h"
 
 uint16_t *video_memory = 0;
 uint16_t terminal_row = 0;
@@ -134,17 +137,15 @@ void kernel_main() {
     enable_paging();
 
     // Enable the systeme interrupts
-    enable_interrupts();
+    // enable_interrupts();
 
-    int fd = fopen("0:/hello.txt", "r");
-    if (fd) {
-        struct file_stat s;
-        fstat(fd, &s);
-        fclose(fd);
-
-        print("File size: ");
+    struct process *process;
+    int res = process_load("0:/blank.bin", &process);
+    if (res != ALPHAOS_ALL_OK) {
+        panic("Failed to load blank.bin");
     }
 
-    while (1) {
-    }
+    task_run_first_ever_task();
+
+    while (1) {}
 }
