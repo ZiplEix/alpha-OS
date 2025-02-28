@@ -16,7 +16,7 @@ task_return:
     ; push the data stack selector
     push    dword [ebx + 44]
 
-    ;push the stack pointer
+    ; push the stack pointer
     push dword [ebx + 40]
 
     ; push the flags
