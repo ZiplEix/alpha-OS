@@ -36,6 +36,7 @@ all: $(BIN)/boot.bin $(BIN)/kernel.bin programs
 	@dd if=/dev/zero bs=1048576 count=16 >> $(BIN)/os.bin
 	@sudo mount -t vfat $(BIN)/os.bin /mnt/d
 	@sudo cp ./hello.txt /mnt/d
+	@sudo cp ./programs/blank/blank.bin /mnt/d
 	@sudo umount /mnt/d
 
 $(BIN)/kernel.bin: $(FILES)
