@@ -29,7 +29,7 @@ FILES = $(BUILD)/kernel.asm.o $(BUILD)/kernel.o \
         $(BUILD)/memory/heap/heap.o $(BUILD)/memory/heap/kheap.o \
         $(BUILD)/memory/paging/paging.o $(BUILD)/memory/paging/paging.asm.o
 
-all: $(BIN)/boot.bin $(BIN)/kernel.bin
+all: $(BIN)/boot.bin $(BIN)/kernel.bin programs
 	@rm -rf $(BIN)/os.bin
 	@dd if=$(BIN)/boot.bin >> $(BIN)/os.bin
 	@dd if=$(BIN)/kernel.bin >> $(BIN)/os.bin
@@ -56,9 +56,15 @@ $(BUILD)/%.asm.o: $(SRC_DIR)/%.asm
 clean:
 	@rm -rf $(BIN)/boot.bin $(BIN)/kernel.bin $(FILES) $(BUILD)/kernelfull.o
 
-fclean: clean
+fclean: clean programs_clean
 	@rm -rf $(BIN)/os.bin
 
 re: fclean all
 
-.PHONY: all clean fclean re
+programs:
+	$(MAKE) -C programs/blank all
+
+programs_clean:
+	$(MAKE) -C programs/blank clean
+
+.PHONY: all clean fclean re programs programs_clean
