@@ -18,7 +18,7 @@ NASMFLAGS_BIN = -f bin -g
 
 FILES = $(BUILD)/kernel.asm.o $(BUILD)/kernel.o \
         $(BUILD)/disk/disk.o $(BUILD)/disk/streamer.o \
-        $(BUILD)/task/tss.asm.o $(BUILD)/task/task.o \
+        $(BUILD)/task/tss.asm.o $(BUILD)/task/task.o $(BUILD)/task/process.o \
         $(BUILD)/fs/pparser.o $(BUILD)/fs/file.o \
         $(BUILD)/fs/fat/fat16.o \
         $(BUILD)/string/string.o \
