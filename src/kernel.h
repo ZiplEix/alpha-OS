@@ -9,6 +9,8 @@
 void kernel_main();
 void print(const char* string);
 void panic(const char *message);
+void kernel_page();
+void kernel_registers();
 
 #define ERROR(value) (void*)(value)
 #define ERROR_I(value) (int)(value)
