@@ -60,7 +60,7 @@ void idt_init()
 
 void isr80h_register_command(int command_id, ISR80H_COMMAND command)
 {
-    if (command_id <= 0 || command_id >= ALPHAOS_MAX_ISR80H_COMMANDS) {
+    if (command_id < 0 || command_id >= ALPHAOS_MAX_ISR80H_COMMANDS) {
         // Invalid command
         panic("isr80h_register_command(): Invalid command ID, index out of bounds\n");
     }
@@ -77,7 +77,7 @@ void *isr80h_handle_command(int command, struct interrupt_frame *frame)
 {
     void *res = 0;
 
-    if (command <= 0 || command >= ALPHAOS_MAX_ISR80H_COMMANDS) {
+    if (command < 0 || command >= ALPHAOS_MAX_ISR80H_COMMANDS) {
         // Invalid command
         return 0;
     }
