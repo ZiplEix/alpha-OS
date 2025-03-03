@@ -76,7 +76,7 @@ static struct paging_4gb_chunk *kernel_chunk = 0;
 
 void panic(const char *message)
 {
-    print("Kernel panic: ");
+    print("\nKernel panic: ");
     print(message);
     print("\n");
 
