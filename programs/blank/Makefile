@@ -5,4 +5,8 @@ all:
 
 clean:
 	@rm -rf ./build
+
+fclean: clean
 	@rm -f ./blank.bin
+
+re: fclean all

@@ -55,22 +55,28 @@ $(BUILD)/%.asm.o: $(SRC_DIR)/%.asm
 	@mkdir -p $(dir $@)
 	$(AS) $(NASMFLAGS_ELF) $< -o $@
 
-clean:
+clean: programs_clean
 	@rm -rf $(BIN)/boot.bin $(BIN)/kernel.bin $(FILES) $(BUILD)/kernelfull.o
 
-fclean: clean programs_clean
+fclean: clean programs_fclean
 	@rm -rf $(BIN)/os.bin
 
-re: fclean all
+re: fclean all programs_re
 
 run:
 	@qemu-system-i386 -hda ./bin/os.bin
 
 programs:
-	$(MAKE) -C programs/blank all
+	$(MAKE) -C programs all
 
 programs_clean:
-	$(MAKE) -C programs/blank clean
+	$(MAKE) -C programs clean
+
+programs_fclean:
+	$(MAKE) -C programs fclean
+
+programs_re:
+	$(MAKE) -C programs re
 
 debug:
 # user land : *0x400000
