@@ -110,7 +110,7 @@ char *strncpy(char *dest, const char *src, int n)
         dest[i] = src[i];
     }
 
-    dest[1] = 0;
+    dest[i] = 0;
 
     return dest;
 }
