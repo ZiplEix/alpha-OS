@@ -105,8 +105,6 @@ struct gdt_structured gdt_structured[ALPHAOS_TOTAL_GDT_SEGMENTS] = {
 void kernel_main() {
     terminal_init();
 
-    print("Hello, World!\ntest");
-
     memset(gtd_real, 0, sizeof(gtd_real));
     gdt_structured_to_gdt(gtd_real, gdt_structured, ALPHAOS_TOTAL_GDT_SEGMENTS);
 
