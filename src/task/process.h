@@ -25,9 +25,17 @@ struct process {
 
     // The size of the data pointde to by "ptr"
     uint32_t size;
+
+    struct keyboard_buffer {
+        char buffer[ALPHAOS_KEYBOARD_BUFFER_SIZE];
+        uint32_t head;
+        uint32_t tail;
+    } keyboard;
 };
 
 int process_load(const char *filename, struct process **process);
 int process_load_for_slot(const char *filename, struct process **process, int process_slot);
+struct process *process_current();
+struct process *process_get(int process_id);
 
 #endif // PROCESS_H

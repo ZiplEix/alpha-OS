@@ -19,6 +19,7 @@
 #include "task/process.h"
 #include "status.h"
 #include "isr80h/isr80h.h"
+#include "keyboard/keyboard.h"
 
 uint16_t *video_memory = 0;
 uint16_t terminal_row = 0;
@@ -146,6 +147,9 @@ void kernel_main() {
 
     // Enable the systeme interrupts
     // enable_interrupts();
+
+    // Init all the systeme keyboard
+    keyboard_init();
 
     struct process *process;
     int res = process_load("0:/blank.bin", &process);

@@ -28,7 +28,8 @@ FILES = $(BUILD)/kernel.asm.o $(BUILD)/kernel.o \
 		$(BUILD)/isr80h/isr80h.o $(BUILD)/isr80h/misc.o $(BUILD)/isr80h/io.o \
         $(BUILD)/memory/memory.o \
         $(BUILD)/memory/heap/heap.o $(BUILD)/memory/heap/kheap.o \
-        $(BUILD)/memory/paging/paging.o $(BUILD)/memory/paging/paging.asm.o
+        $(BUILD)/memory/paging/paging.o $(BUILD)/memory/paging/paging.asm.o \
+		$(BUILD)/keyboard/keyboard.o
 
 all: $(BIN)/boot.bin $(BIN)/kernel.bin programs
 	@rm -rf $(BIN)/os.bin
