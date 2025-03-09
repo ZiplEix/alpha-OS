@@ -82,6 +82,6 @@ programs_re:
 debug:
 # user land : *0x400000
 # kernel land : 0x100000
-	gdb -q -ex "add-symbol-file ./build/kernelfull.o 0x100000" -ex "target remote | qemu-system-i386 -hda ./bin/os.bin -S -gdb stdio" -ex "break *0x400000"
+	gdb -q -ex "add-symbol-file ./build/kernelfull.o 0x100000" -ex "target remote | qemu-system-i386 -hda ./bin/os.bin -S -gdb stdio"
 
 .PHONY: all clean fclean re programs programs_clean run debug
