@@ -103,11 +103,6 @@ struct gdt_structured gdt_structured[ALPHAOS_TOTAL_GDT_SEGMENTS] = {
     {.base = (uint32_t)&tss, .limit = sizeof(tss), .type = 0xE9},                  // TSS Segment
 };
 
-void pic_timer_callback(struct interrupt_frame *frame)
-{
-    print("Timer activated !\n");
-}
-
 void kernel_main() {
     terminal_init();
 
@@ -156,15 +151,11 @@ void kernel_main() {
     // Init all the systeme keyboard
     keyboard_init();
 
-    idt_register_interrupt_callback(0x20, pic_timer_callback);
-
     struct process *process;
     int res = process_load_switch("0:/blank.bin", &process);
     if (res != ALPHAOS_ALL_OK) {
         panic("Failed to load blank.bin");
     }
-
-    keyboard_push('A');
 
     task_run_first_ever_task();
 
