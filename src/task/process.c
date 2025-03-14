@@ -7,6 +7,7 @@
 #include "string/string.h"
 #include "kernel.h"
 #include "memory/paging/paging.h"
+#include "loader/formats/elfloader.h"
 
 // The current process that is running
 struct process *current_process = 0;
@@ -64,6 +65,7 @@ static int process_load_binary(const char *filename, struct process *process)
         goto out;
     }
 
+    process->file_type = PROCESS_FILETYPE_BINARY;
     process->ptr = program_data_ptr;
     process->size = stat.filesize;
 
@@ -72,10 +74,29 @@ out:
     return res;
 }
 
+static int process_load_elf(const char *filname, struct process *process)
+{
+    int res = 0;
+    struct elf_file *elf_file = 0;
+    res = elf_load(filname, &elf_file);
+    if (ISERR(res)) {
+        goto out;
+    }
+
+    process->file_type = PROCESS_FILETYPE_ELF;
+    process->elf_file = elf_file;
+
+out:
+    return res;
+}
+
 static int process_load_data(const char *filename, struct process *process)
 {
     int res = 0;
-    res = process_load_binary(filename, process);
+    res = process_load_elf(filename, process);
+    if (res == -EINFORMAT) {
+        res = process_load_binary(filename, process);
+    }
     return res;
 }
 
@@ -93,11 +114,38 @@ int process_map_binary(struct process *process)
     return res;
 }
 
+int process_map_elf(struct process *process)
+{
+    int res = 0;
+
+    struct elf_file *elf_file = process->elf_file;
+    res = paging_map_to(
+        process->task->page_directory,
+        paging_align_to_lower_page(elf_virtual_base(elf_file)),
+        elf_phys_base(elf_file),
+        paging_align_address(elf_phys_end(elf_file)),
+        PAGING_IS_PRESENT | PAGING_ACCESS_FROM_ALL | PAGING_IS_WRITABLE
+    );
+
+    return res;
+}
+
 // Process must be load at this point
 int process_map_memory(struct process *process)
 {
     int res = 0;
-    res = process_map_binary(process);
+
+    switch (process->file_type) {
+        case PROCESS_FILETYPE_ELF:
+            res = process_map_elf(process);
+            break;
+        case PROCESS_FILETYPE_BINARY:
+            res = process_map_binary(process);
+            break;
+        default:
+            panic("process_map_memory: Unknown file type\n");
+    }
+
     if (res < 0) {
         goto out;
     }
