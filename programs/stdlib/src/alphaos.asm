@@ -1,5 +1,7 @@
 [BITS 32]
 
+section .asm
+
 ; void print(const char *filename)
 global print:function
 print:
@@ -28,8 +30,20 @@ global __malloc:function
 __malloc:
     push    ebp
     mov     ebp, esp
-    push    dword[ebp + 8]
+    push    dword[ebp + 8] ; size
     mov     eax, 4 ; kernel malloc
+    int     0x80
+    add     esp, 4
+    pop     ebp
+    ret
+
+; void __free(void *ptr)
+global __free:function
+__free:
+    push    ebp
+    mov     ebp, esp
+    push    dword[ebp + 8] ; ptr
+    mov     eax, 5 ; kernel free
     int     0x80
     add     esp, 4
     pop     ebp
