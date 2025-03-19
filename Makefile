@@ -47,6 +47,7 @@ $(BIN)/kernel.bin: $(FILES)
 	$(CC) $(FLAGS) -T $(SRC_DIR)/linker.ld -o $(BIN)/kernel.bin -ffreestanding -O0 -nostdlib $(BUILD)/kernelfull.o
 
 $(BIN)/boot.bin: $(SRC_DIR)/boot/boot.asm
+	@mkdir -p $(BIN)
 	$(AS) $(NASMFLAGS_BIN) $< -o $@
 
 $(BUILD)/%.o: $(SRC_DIR)/%.c
@@ -59,9 +60,11 @@ $(BUILD)/%.asm.o: $(SRC_DIR)/%.asm
 
 clean: programs_clean
 	@rm -rf $(BIN)/boot.bin $(BIN)/kernel.bin $(FILES) $(BUILD)/kernelfull.o
+	@rm -rf $(BUILD)
 
 fclean: clean programs_fclean
 	@rm -rf $(BIN)/os.bin
+	@rm -rf $(BIN)
 
 re: fclean all programs_re
 
