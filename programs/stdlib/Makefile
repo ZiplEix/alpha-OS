@@ -18,7 +18,8 @@ FLAGS    = -g -ffreestanding -falign-jumps -falign-functions -falign-labels \
 NASMFLAGS_ELF = -f elf -g
 NASMFLAGS_BIN = -f bin -g
 
-FILES = $(BUILD)/start.o
+FILES = $(BUILD)/start.o \
+		$(BUILD)/alphaos.o
 
 all: $(FILES)
 	$(LD) -m elf_i386 -relocatable $(FILES) -o $(NAME)
