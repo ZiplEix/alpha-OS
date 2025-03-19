@@ -1,5 +1,5 @@
-#ifndef STDLIB_H
-#define STDLIB_H
+#ifndef ALPHAOS_STDLIB_H
+#define ALPHAOS_STDLIB_H
 
 #include <stddef.h>
 
@@ -8,4 +8,4 @@ void free(void *ptr);
 
 char *itoa(int value);
 
-#endif // STDLIB_H
+#endif // ALPHAOS_STDLIB_H
