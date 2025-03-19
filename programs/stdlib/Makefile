@@ -1,10 +1,10 @@
-NAME := blank.elf
+NAME :=	stdlib.elf
 
 CC		= i686-elf-gcc
 AS		= nasm
 LD 		= i686-elf-ld
 
-SRC_DIR	= .
+SRC_DIR	= ./src
 BUILD   = build
 BIN    	= bin
 
@@ -18,14 +18,18 @@ FLAGS    = -g -ffreestanding -falign-jumps -falign-functions -falign-labels \
 NASMFLAGS_ELF = -f elf -g
 NASMFLAGS_BIN = -f bin -g
 
-FILES = $(BUILD)/blank.o
+FILES = $(BUILD)/start.o
 
 all: $(FILES)
-	i686-elf-gcc -g -T ./linker.ld -o ./$(NAME) -ffreestanding -O0 -nostdlib -fpic $(FILES) ../stdlib/stdlib.elf
+	$(LD) -m elf_i386 -relocatable $(FILES) -o $(NAME)
 
 $(BUILD)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(dir $@)
 	$(CC) $(INCLUDES) $(FLAGS) -std=gnu99 -c $< -o $@
+
+$(BUILD)/%.o: $(SRC_DIR)/%.asm
+	@mkdir -p $(dir $@)
+	$(AS) $(NASMFLAGS_ELF) $< -o $@
 
 clean:
 	@rm -rf ./build
