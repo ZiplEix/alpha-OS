@@ -5,6 +5,7 @@
 
 void print(const char *filename);
 int getkey();
+void __putchar(char c);
 
 void *__malloc(size_t size);
 void __free(void *ptr);

@@ -18,6 +18,7 @@ NASMFLAGS_BIN = -f bin -g
 FILES = $(BUILD)/start.o \
 		$(BUILD)/alphaos.o \
 		$(BUILD)/stdlib.o \
+		$(BUILD)/stdio.o \
 
 all: $(FILES)
 	$(LD) -m elf_i386 -relocatable $(FILES) -o $(NAME)
