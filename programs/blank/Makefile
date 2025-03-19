@@ -10,7 +10,10 @@ BIN    	= bin
 
 INCLUDES = -I$(SRC_DIR) -I../stdlib/src
 
-FLAGS    = -g
+FLAGS    = -g  -falign-jumps -falign-functions -falign-labels \
+           -falign-loops -fstrength-reduce -fomit-frame-pointer -finline-functions \
+           -Wno-unused-function -fno-builtin -Werror -Wno-unused-label -Wno-cpp \
+           -Wno-unused-parameter -nostdlib -nostartfiles -nodefaultlibs -Wall -O0
 
 NASMFLAGS_ELF = -f elf -g
 NASMFLAGS_BIN = -f bin -g
