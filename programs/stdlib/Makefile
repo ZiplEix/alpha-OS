@@ -10,7 +10,7 @@ BIN    	= bin
 
 INCLUDES = -I$(SRC_DIR)
 
-FLAGS    = -g -ffreestanding -falign-jumps -falign-functions -falign-labels \
+FLAGS    = -g -falign-jumps -falign-functions -falign-labels \
            -falign-loops -fstrength-reduce -fomit-frame-pointer -finline-functions \
            -Wno-unused-function -fno-builtin -Werror -Wno-unused-label -Wno-cpp \
            -Wno-unused-parameter -nostdlib -nostartfiles -nodefaultlibs -Wall -O0

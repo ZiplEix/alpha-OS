@@ -1,5 +1,5 @@
 *.bin
 *.o
-*.elf
+**/*.elf
 ./build
 **/build/
