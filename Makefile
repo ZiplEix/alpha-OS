@@ -25,7 +25,7 @@ FILES = $(BUILD)/kernel.asm.o $(BUILD)/kernel.o \
         $(BUILD)/idt/idt.asm.o $(BUILD)/idt/idt.o \
         $(BUILD)/io/io.asm.o \
         $(BUILD)/gdt/gdt.o $(BUILD)/gdt/gdt.asm.o \
-		$(BUILD)/isr80h/isr80h.o $(BUILD)/isr80h/misc.o $(BUILD)/isr80h/io.o \
+		$(BUILD)/isr80h/isr80h.o $(BUILD)/isr80h/misc.o $(BUILD)/isr80h/io.o $(BUILD)/isr80h/memory.o \
         $(BUILD)/memory/memory.o \
         $(BUILD)/memory/heap/heap.o $(BUILD)/memory/heap/kheap.o \
         $(BUILD)/memory/paging/paging.o $(BUILD)/memory/paging/paging.asm.o \
@@ -83,6 +83,6 @@ programs_re:
 debug:
 # user land : *0x400000
 # kernel land : 0x100000
-	gdb -q -ex "add-symbol-file ./build/kernelfull.o 0x100000" -ex "target remote | qemu-system-i386 -hda ./bin/os.bin -S -gdb stdio"
+	gdb -q -ex "add-symbol-file ./build/kernelfull.o 0x100000" -ex "add-symbol-file ./programs/blank/blank.elf 0x400000" -ex "target remote | qemu-system-i386 -hda ./bin/os.bin -S -gdb stdio"
 
 .PHONY: all clean fclean re programs programs_clean run debug

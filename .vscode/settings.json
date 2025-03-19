@@ -5,6 +5,8 @@
         "idt.h": "c",
         "string.h": "c",
         "pparser.h": "c",
-        "paging.h": "c"
+        "paging.h": "c",
+        "memory.h": "c",
+        "stdlib.h": "c"
     }
 }
