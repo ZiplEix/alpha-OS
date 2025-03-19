@@ -22,3 +22,15 @@ getkey:
 
     pop     ebp
     ret
+
+; void *__malloc(size_t size)
+global __malloc:function
+__malloc:
+    push    ebp
+    mov     ebp, esp
+    push    dword[ebp + 8]
+    mov     eax, 4 ; kernel malloc
+    int     0x80
+    add     esp, 4
+    pop     ebp
+    ret

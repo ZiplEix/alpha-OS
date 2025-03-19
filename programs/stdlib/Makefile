@@ -10,16 +10,14 @@ BIN    	= bin
 
 INCLUDES = -I$(SRC_DIR)
 
-FLAGS    = -g -ffreestanding -falign-jumps -falign-functions -falign-labels \
-           -falign-loops -fstrength-reduce -fomit-frame-pointer -finline-functions \
-           -Wno-unused-function -fno-builtin -Werror -Wno-unused-label -Wno-cpp \
-           -Wno-unused-parameter -nostdlib -nostartfiles -nodefaultlibs -Wall -O0
+FLAGS    = -g
 
 NASMFLAGS_ELF = -f elf -g
 NASMFLAGS_BIN = -f bin -g
 
 FILES = $(BUILD)/start.o \
-		$(BUILD)/alphaos.o
+		$(BUILD)/alphaos.o \
+		$(BUILD)/stdlib.o \
 
 all: $(FILES)
 	$(LD) -m elf_i386 -relocatable $(FILES) -o $(NAME)
