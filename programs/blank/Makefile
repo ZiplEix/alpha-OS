@@ -8,7 +8,7 @@ SRC_DIR	= .
 BUILD   = build
 BIN    	= bin
 
-INCLUDES = -I$(SRC_DIR)
+INCLUDES = -I$(SRC_DIR) -I../stdlib/src
 
 FLAGS    = -g -ffreestanding -falign-jumps -falign-functions -falign-labels \
            -falign-loops -fstrength-reduce -fomit-frame-pointer -finline-functions \
