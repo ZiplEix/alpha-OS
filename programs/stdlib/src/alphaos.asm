@@ -11,3 +11,14 @@ print:
     add     esp, 4
     pop     ebp
     ret
+
+; int getkey()
+global getkey:function
+getkey:
+    push    ebp
+    mov     ebp, esp
+    mov     eax, 2 ; kernel getkey
+    int     0x80
+
+    pop     ebp
+    ret
