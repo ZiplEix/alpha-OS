@@ -14,9 +14,9 @@ print:
     pop     ebp
     ret
 
-; int getkey()
-global getkey:function
-getkey:
+; int __getkey()
+global __getkey:function
+__getkey:
     push    ebp
     mov     ebp, esp
     mov     eax, 2 ; kernel getkey

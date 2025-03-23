@@ -18,8 +18,8 @@ FLAGS    = -g -falign-jumps -falign-functions -falign-labels \
 NASMFLAGS_ELF = -f elf -g
 NASMFLAGS_BIN = -f bin -g
 
-FILES = $(BUILD)/start.o \
-		$(BUILD)/alphaos.o \
+FILES = $(BUILD)/start.asm.o \
+		$(BUILD)/alphaos.asm.o $(BUILD)/alphaos.o \
 		$(BUILD)/stdlib.o \
 		$(BUILD)/stdio.o \
 
@@ -30,7 +30,7 @@ $(BUILD)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(dir $@)
 	$(CC) $(INCLUDES) $(FLAGS) -std=gnu99 -c $< -o $@
 
-$(BUILD)/%.o: $(SRC_DIR)/%.asm
+$(BUILD)/%.asm.o: $(SRC_DIR)/%.asm
 	@mkdir -p $(dir $@)
 	$(AS) $(NASMFLAGS_ELF) $< -o $@
 

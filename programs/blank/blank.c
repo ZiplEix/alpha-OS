@@ -9,16 +9,19 @@ int main(int argc, char const *argv[])
     print("Hello, World!\n");
 
     print(itoa(45678));
+    putchar('\n');
 
     putchar('Z');
+    putchar('\n');
 
     void *ptr = malloc(512);
     free(ptr);
 
+    char buff[1024];
+    terminal_readline(buff, sizeof(buff), true);
+    printf("You typed: %s\n", buff);
+
     while (1) {
-        if (getkey() != 0) {
-            print("You pressed a key!\n");
-        }
     }
 
     return 0;
