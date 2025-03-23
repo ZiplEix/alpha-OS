@@ -40,6 +40,7 @@ all: $(BIN)/boot.bin $(BIN)/kernel.bin programs
 	@sudo mount -t vfat $(BIN)/os.bin /mnt/d
 	@sudo cp ./hello.txt /mnt/d
 	@sudo cp ./programs/blank/blank.elf /mnt/d
+	@sudo cp ./programs/shell/shell.elf /mnt/d
 	@sudo umount /mnt/d
 
 $(BIN)/kernel.bin: $(FILES)
