@@ -26,7 +26,7 @@ FILES = $(BUILD)/kernel.asm.o $(BUILD)/kernel.o \
         $(BUILD)/idt/idt.asm.o $(BUILD)/idt/idt.o \
         $(BUILD)/io/io.asm.o \
         $(BUILD)/gdt/gdt.o $(BUILD)/gdt/gdt.asm.o \
-		$(BUILD)/isr80h/isr80h.o $(BUILD)/isr80h/misc.o $(BUILD)/isr80h/io.o $(BUILD)/isr80h/memory.o \
+		$(BUILD)/isr80h/isr80h.o $(BUILD)/isr80h/misc.o $(BUILD)/isr80h/io.o $(BUILD)/isr80h/memory.o $(BUILD)/isr80h/process.o \
         $(BUILD)/memory/memory.o \
         $(BUILD)/memory/heap/heap.o $(BUILD)/memory/heap/kheap.o \
         $(BUILD)/memory/paging/paging.o $(BUILD)/memory/paging/paging.asm.o \
