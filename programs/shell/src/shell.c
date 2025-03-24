@@ -12,8 +12,7 @@ int main(int argc, char const *argv[])
         char buf[1024];
         terminal_readline(buf, 1024, true);
         putchar('\n');
-        print(buf);
-        putchar('\n');
+        __process_load_start(buf);
     }
 
     return 0;
