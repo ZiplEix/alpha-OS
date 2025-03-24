@@ -1,0 +1,19 @@
+FROM debian:sid
+
+RUN apt update && apt upgrade -y && apt install -y \
+    build-essential \
+    bison \
+    flex \
+    libgmp3-dev \
+    libmpc-dev \
+    libmpfr-dev \
+    texinfo \
+    libisl-dev \
+    nasm
+
+RUN mkdir /home/opt
+RUN mkdir /home/opt/cross
+
+COPY ./opt/cross/ /home/opt/cross
+
+CMD [ "ldd", "--version" ]

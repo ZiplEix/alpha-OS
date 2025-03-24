@@ -1,0 +1,23 @@
+name: Build and Test compilation
+
+on:
+    push:
+        branches:
+            - master
+    pull_request:
+        branches:
+            - master
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Build docker image
+              run: docker build -t os .
+
+            - name: Run compilation tests
+              run: docker run --rm os

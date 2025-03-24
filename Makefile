@@ -33,7 +33,7 @@ FILES = $(BUILD)/kernel.asm.o $(BUILD)/kernel.o \
 		$(BUILD)/keyboard/keyboard.o $(BUILD)/keyboard/classic.o \
 		$(BUILD)/loader/formats/elf.o $(BUILD)/loader/formats/elfloader.o \
 
-all: $(BIN)/boot.bin $(BIN)/kernel.bin programs
+all: compile
 	@rm -rf $(BIN)/os.bin
 	@dd if=$(BIN)/boot.bin >> $(BIN)/os.bin
 	@dd if=$(BIN)/kernel.bin >> $(BIN)/os.bin
@@ -43,6 +43,8 @@ all: $(BIN)/boot.bin $(BIN)/kernel.bin programs
 	@sudo cp ./programs/blank/blank.elf /mnt/d
 	@sudo cp ./programs/shell/shell.elf /mnt/d
 	@sudo umount /mnt/d
+
+compile: $(BIN)/boot.bin $(BIN)/kernel.bin programs
 
 $(BIN)/kernel.bin: $(FILES)
 	$(LD) -g -relocatable $(FILES) -o $(BUILD)/kernelfull.o
