@@ -12,6 +12,8 @@ void __putchar(char c);
 void *__malloc(size_t size);
 void __free(void *ptr);
 
+void __process_load_start(const char *filename);
+
 void terminal_readline(char *out, int max, bool output_while_typing);
 
 #endif // ALPHAOS_H

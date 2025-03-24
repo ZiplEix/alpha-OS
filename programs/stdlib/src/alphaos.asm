@@ -60,3 +60,15 @@ __free:
     add     esp, 4
     pop     ebp
     ret
+
+; void __process_load_start(const char *filename)
+global __process_load_start:function
+__process_load_start:
+    push    ebp
+    mov     ebp, esp
+    push    dword[ebp + 8] ; filename
+    mov     eax, 6 ; kernel process_load_start
+    int     0x80
+    add     esp, 4
+    pop     ebp
+    ret
