@@ -124,3 +124,54 @@ int tonumericdigit(char c)
 {
     return c - '0';
 }
+
+char *sp = 0;
+char *strtok(char *str, const char *delim)
+{
+    int i = 0;
+    int len = strlen(delim);
+    if (!str && !sp) {
+        return 0;
+    }
+
+    if (str && !sp) {
+        sp = str;
+    }
+
+    char *p_start = sp;
+    while(1) {
+        for (i = 0; i < len; i++) {
+            if (*p_start == delim[i]) {
+                p_start++;
+                break;
+            }
+        }
+
+        if (i == len) {
+            sp = p_start;
+            break;
+        }
+    }
+
+    if (*sp == '\0') {
+        sp = 0;
+        return 0;
+    }
+
+    while (*sp != '\0') {
+        for (i = 0; i < len; i++) {
+            if (*sp == delim[i]) {
+                *sp = '\0';
+                break;
+            }
+        }
+        sp++;
+
+        if (i < len) {
+            break;
+        }
+    }
+
+    return p_start;
+}
+

@@ -23,6 +23,8 @@ FILES = $(BUILD)/start.asm.o \
 		$(BUILD)/alphaos.asm.o $(BUILD)/alphaos.o \
 		$(BUILD)/stdlib.o \
 		$(BUILD)/stdio.o \
+		$(BUILD)/string.o \
+		$(BUILD)/memory.o \
 
 all: $(FILES)
 	$(LD) -m elf_i386 -relocatable $(FILES) -o $(NAME)
