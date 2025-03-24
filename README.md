@@ -84,6 +84,10 @@ make run
 
 This will launch QEMU and boot the generated ISO image.
 
+## Acknowledgment
+
+The majority of the code in Alpha OS is based on the work of Daniel McCarthy and the [OSDev](https://wiki.osdev.org/) wiki. However, all the code present in this repository has been thoroughly understood and assimilated. The documentation, on the other hand, is entirely my own work.
+
 ## Contributing
 
 Contributions are welcome! If you have any improvements or fixes, please submit a pull request. For major changes, please open an issue first to discuss what you would like to change.
