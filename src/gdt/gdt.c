@@ -4,7 +4,7 @@
 void encodeGdtEntry(uint8_t *target, struct gdt_structured source)
 {
     if ((source.limit > 65536) && ((source.limit & 0xFFF) != 0xFFF)) {
-        panic("encodedGdtEntry: Invalid argument\n");
+        panictamere("encodedGdtEntry: Invalid argument\n");
     }
 
     target[6] = 0x40;
