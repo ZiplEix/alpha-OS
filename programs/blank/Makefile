@@ -1,8 +1,9 @@
 NAME := blank.elf
 
-CC		= i686-elf-gcc
+CROSS 	= ../../opt/cross/bin/
+CC		= $(CROSS)i686-elf-gcc
 AS		= nasm
-LD 		= i686-elf-ld
+LD 		= $(CROSS)i686-elf-ld
 
 SRC_DIR	= .
 BUILD   = build
@@ -21,7 +22,7 @@ NASMFLAGS_BIN = -f bin -g
 FILES = $(BUILD)/blank.o
 
 all: $(FILES)
-	i686-elf-gcc -g -T ./linker.ld -o ./$(NAME) -ffreestanding -O0 -nostdlib -fpic $(FILES) ../stdlib/stdlib.elf
+	$(CC) -g -T ./linker.ld -o ./$(NAME) -ffreestanding -O0 -nostdlib -fpic $(FILES) ../stdlib/stdlib.elf
 
 $(BUILD)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(dir $@)
