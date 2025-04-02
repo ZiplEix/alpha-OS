@@ -17,6 +17,8 @@ The goal of Alpha OS is to provide a hands-on approach to understanding the inne
 
 ## Project Architecture
 
+![diagram](https://github.com/user-attachments/assets/83c46e10-b5ed-44ce-831b-745d3fdcf599)
+
 Alpha OS is structured into several key components, each located in their respective directories within the `src` folder:
 
 - **Bootloader** (`src/boot`): Initializes the system and loads the kernel into memory.
