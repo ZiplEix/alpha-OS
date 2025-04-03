@@ -178,6 +178,12 @@ void kernel_main() {
         panic("Failed to load shell.bin");
     }
 
+    struct command_argument arg;
+    strcpy(arg.argument, "SHELL.ELF");
+    arg.next = 0;
+
+    process_inject_arguments(process, &arg);
+
     task_run_first_ever_task();
 
     while (1) {}

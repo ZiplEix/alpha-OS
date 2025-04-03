@@ -5,10 +5,13 @@
 
 int main(int argc, char const *argv[])
 {
-    char str[] = "hello world";
-    struct command_argument *rootcommand = alphaos_parse_command(str, sizeof(str));
-    printf("rootcommand: %s\n", rootcommand->arugment);
-    printf("next: %s\n", rootcommand->next->arugment);
+    struct process_arguments arguments;
+    __process_get_arguments(&arguments);
+    printf("argc: %d\n", arguments.argc);
+    for (int i = 0; i < arguments.argc; i++) {
+        printf("argv[%d]: %s\n", i, arguments.argv[i]);
+    }
+    printf("Press any key to continue...\n");
 
     while (1) {
     }

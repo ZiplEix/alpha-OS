@@ -169,6 +169,13 @@ int paging_set(uint32_t *directory, void *virtual_address, uint32_t value)
     return res;
 }
 
+void *paging_get_physical_address(uint32_t *directory, void *virtual_address)
+{
+    void *new_virtual_address = (void *)paging_align_to_lower_page(virtual_address);
+    void *difference = (void *)((uint32_t)virtual_address - (uint32_t)new_virtual_address);
+    return (void *)((paging_get(directory, new_virtual_address) & 0xFFFFF000) + (uint32_t)difference);
+}
+
 uint32_t paging_get(uint32_t *directory, void *virtual_address)
 {
     uint32_t directory_index = 0;

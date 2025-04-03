@@ -9,6 +9,11 @@ struct command_argument {
     struct command_argument *next;
 };
 
+struct process_arguments {
+    int argc;
+    char **argv;
+};
+
 void print(const char *filename);
 int __getkey();
 int __getkeyblock();
@@ -18,6 +23,8 @@ void *__malloc(size_t size);
 void __free(void *ptr);
 
 void __process_load_start(const char *filename);
+
+void __process_get_arguments(struct process_arguments *arguments);
 
 void terminal_readline(char *out, int max, bool output_while_typing);
 

@@ -72,3 +72,15 @@ __process_load_start:
     add     esp, 4
     pop     ebp
     ret
+
+; void __process_get_arguments(struct process_aguments *arguments)
+global __process_get_arguments:function
+__process_get_arguments:
+    push    ebp
+    mov     ebp, esp
+    push    dword[ebp + 8] ; arguments
+    mov     eax, 8 ; kernel process_get_arguments
+    int     0x80
+    add     esp, 4
+    pop     ebp
+    ret
