@@ -10,6 +10,11 @@ int main(int argc, char const *argv[])
 
     printf("%s\n", ptr);
 
+    free(ptr);
+    printf("Freed memory\n");
+
+    ptr[0] = 'B';
+
     while (1) {
     }
 
