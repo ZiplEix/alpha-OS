@@ -5,15 +5,10 @@
 
 int main(int argc, char const *argv[])
 {
-    char *ptr = malloc(20);
-    strcpy(ptr, "Hello, World!");
-
-    printf("%s\n", ptr);
-
-    free(ptr);
-    printf("Freed memory\n");
-
-    ptr[0] = 'B';
+    char str[] = "hello world";
+    struct command_argument *rootcommand = alphaos_parse_command(str, sizeof(str));
+    printf("rootcommand: %s\n", rootcommand->arugment);
+    printf("next: %s\n", rootcommand->next->arugment);
 
     while (1) {
     }

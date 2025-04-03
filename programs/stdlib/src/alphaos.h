@@ -4,6 +4,11 @@
 #include <stddef.h>
 #include <stdbool.h>
 
+struct command_argument {
+    char arugment[512];
+    struct command_argument *next;
+};
+
 void print(const char *filename);
 int __getkey();
 int __getkeyblock();
@@ -15,5 +20,7 @@ void __free(void *ptr);
 void __process_load_start(const char *filename);
 
 void terminal_readline(char *out, int max, bool output_while_typing);
+
+struct command_argument *alphaos_parse_command(const char *command, int max);
 
 #endif // ALPHAOS_H
