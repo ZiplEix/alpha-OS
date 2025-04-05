@@ -24,6 +24,9 @@ void __free(void *ptr);
 
 void __process_load_start(const char *filename);
 
+int __system(struct command_argument* args);
+int system_run(const char *command);
+
 void __process_get_arguments(struct process_arguments *arguments);
 
 void terminal_readline(char *out, int max, bool output_while_typing);

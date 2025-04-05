@@ -73,6 +73,18 @@ __process_load_start:
     pop     ebp
     ret
 
+; int __system(struct command_arguments* args)
+global __system:function
+__system:
+    push    ebp
+    mov     ebp, esp
+    push    dword[ebp + 8] ; args
+    mov     eax, 7 ; process_systrem (run a system command based on the arguments)
+    int     0x80
+    add     esp, 4
+    pop     ebp
+    ret
+
 ; void __process_get_arguments(struct process_aguments *arguments)
 global __process_get_arguments:function
 __process_get_arguments:

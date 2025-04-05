@@ -8,7 +8,7 @@
 struct command_argument *alphaos_parse_command(const char *command, int max)
 {
     struct command_argument *root_command = 0;
-    char scommand[1024];
+    char scommand[1025];
     if (max > (int)sizeof(scommand)) {
         return 0;
     }
@@ -84,4 +84,16 @@ void terminal_readline(char *out, int max, bool output_while_typing)
     }
 
     out[i] = '\0';
+}
+
+int system_run(const char *command)
+{
+    char buff[1024];
+    strncpy(buff, command, sizeof(buff));
+    struct command_argument *root_command_arg = alphaos_parse_command(buff, sizeof(buff));
+    if (!root_command_arg) {
+        return -1;
+    }
+
+    return __system(root_command_arg);
 }
