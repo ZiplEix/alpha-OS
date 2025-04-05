@@ -5,7 +5,9 @@
 
 int main(int argc, char const *argv[])
 {
-    print(argv[0]);
+    for (int i = 0; i < argc; i++) {
+        printf("arg[%d]: %s\n", i, argv[i]);
+    }
 
     while (1) {
     }
