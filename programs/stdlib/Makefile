@@ -19,7 +19,7 @@ FLAGS    = -g -falign-jumps -falign-functions -falign-labels \
 NASMFLAGS_ELF = -f elf -g
 NASMFLAGS_BIN = -f bin -g
 
-FILES = $(BUILD)/start.asm.o \
+FILES = $(BUILD)/start.asm.o $(BUILD)/start.o \
 		$(BUILD)/alphaos.asm.o $(BUILD)/alphaos.o \
 		$(BUILD)/stdlib.o \
 		$(BUILD)/stdio.o \
