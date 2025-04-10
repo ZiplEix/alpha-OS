@@ -120,6 +120,92 @@ static struct process_allocation *process_get_allocation_by_addr(struct process 
     return 0;
 }
 
+static int process_terminate_allocation(struct process *process)
+{
+    for (int i = 0; i < ALPHAOS_MAX_PROGRAM_ALLOCATIONS; i++) {
+        process_free(process, process->allocations[i].ptr);
+    }
+
+    return 0;
+}
+
+int process_free_binary_data(struct process *process)
+{
+    kfree(process->ptr);
+    return 0;
+}
+
+int process_free_elf_data(struct process *process)
+{
+    elf_close(process->elf_file);
+    return 0;
+}
+
+int process_free_program_data(struct process *process)
+{
+    int res = 0;
+
+    switch(process->file_type) {
+        case PROCESS_FILETYPE_BINARY:
+            res = process_free_binary_data(process);
+            break;
+        case PROCESS_FILETYPE_ELF:
+            res = process_free_elf_data(process);
+            break;
+        default:
+            res = -EINVARG;
+            break;
+    }
+
+    return res;
+}
+
+void process_switch_to_any()
+{
+    for (int i = 0; i < ALPHAOS_MAX_PROCESSES; i++) {
+        if (processes[i] != 0) {
+            current_process = processes[i];
+            break;
+        }
+    }
+
+    // Can be replaced by the initialization of a shell or other process
+    panic("process_switch_to_any: No process to switch to !\n");
+}
+
+static void process_unlik(struct process *process)
+{
+    processes[process->id] = 0;
+
+    if (current_process == process) {
+        process_switch_to_any();
+    }
+}
+
+int process_terminate(struct process *process)
+{
+    int res = 0;
+
+    res = process_terminate_allocation(process);
+    if (res < 0) {
+        goto out;
+    }
+
+    res = process_free_program_data(process);
+    if (res < 0) {
+        goto out;
+    }
+
+    kfree(process->stack);
+
+    task_free(process->task);
+
+    process_unlik(process);
+
+out:
+    return 0;
+}
+
 void process_get_arguments(struct process *process, int *argc, char ***argv)
 {
     *argc = process->arguments.argc;
