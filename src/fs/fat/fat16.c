@@ -587,24 +587,36 @@ out:
 
 void *fat16_open(struct disk *disk, struct path_part *path, FILE_MODE mode)
 {
+    struct fat_file_descriptor *descriptor = 0;
+    int res = 0;
+
     if (mode != FILE_MODE_READ) {
-        return ERROR(-ERDONLY);
+        res = -ERDONLY;
+        goto out;
     }
 
-    struct fat_file_descriptor *descriptor = 0;
     descriptor = kzalloc(sizeof(struct fat_file_descriptor));
     if (!descriptor) {
-        return ERROR(-ENOMEM);
+        res = -ENOMEM;
+        goto out;
     }
 
     descriptor->item = fat16_get_directory_entry(disk, path);
     if (!descriptor->item) {
-        return ERROR(-EIO);
+        res = -EIO;
+        goto out;
     }
 
     descriptor->pos = 0;
 
     return descriptor;
+
+out:
+    if (descriptor) {
+        kfree(descriptor);
+    }
+
+    return ERROR(res);
 }
 
 static int fat16_free_file_descriptor(struct fat_file_descriptor *descriptor)
