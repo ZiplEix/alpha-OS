@@ -9,11 +9,5 @@ int main(int argc, char const *argv[])
         printf("arg[%d]: %s\n", i, argv[i]);
     }
 
-    char *ptr = (char *)0x00;
-    *ptr = 0x50; // Error
-
-    while (1) {
-    }
-
     return 0;
 }

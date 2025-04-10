@@ -96,3 +96,13 @@ __process_get_arguments:
     add     esp, 4
     pop     ebp
     ret
+
+; void __exit()
+global __exit:function
+__exit:
+    push    ebp
+    mov     ebp, esp
+    mov     eax, 9 ; process exit
+    int     0x80
+    pop     ebp
+    ret

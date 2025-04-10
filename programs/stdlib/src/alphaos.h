@@ -29,6 +29,8 @@ int system_run(const char *command);
 
 void __process_get_arguments(struct process_arguments *arguments);
 
+void __exit();
+
 void terminal_readline(char *out, int max, bool output_while_typing);
 
 struct command_argument *alphaos_parse_command(const char *command, int max);
