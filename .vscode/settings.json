@@ -8,6 +8,7 @@
         "paging.h": "c",
         "memory.h": "c",
         "stdlib.h": "c",
-        "alphaos.h": "c"
+        "alphaos.h": "c",
+        "process.h": "c"
     }
 }
