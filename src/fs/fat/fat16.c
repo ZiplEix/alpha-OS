@@ -200,6 +200,7 @@ out:
 int fat16_get_root_directory(struct disk *disk, struct fat_private *fat_private, struct fat_directory *directory)
 {
     int res = 0;
+    struct fat_directory_item *dir = 0;
     struct fat_header *primary_header = &fat_private->header.primary_header;
     int root_dir_sector_pos = (primary_header->fat_copies * primary_header->sectors_per_fat) + primary_header->reserved_sectors;
     int root_dir_entries = fat_private->header.primary_header.root_dir_entries;
@@ -212,7 +213,7 @@ int fat16_get_root_directory(struct disk *disk, struct fat_private *fat_private,
 
     int total_items = fat16_get_total_items_for_directory(disk, root_dir_sector_pos);
 
-    struct fat_directory_item *dir = kzalloc(root_dir_size);
+    dir = kzalloc(root_dir_size);
     if (!dir) {
         res = -ENOMEM;
         goto out;
@@ -235,6 +236,11 @@ int fat16_get_root_directory(struct disk *disk, struct fat_private *fat_private,
     directory->ending_sector_pos = root_dir_sector_pos + total_sectors;
 
 out:
+    if (res != ALPHAOS_ALL_OK) {
+        if (dir) {
+            kfree(dir);
+        }
+    }
     return res;
 }
 
