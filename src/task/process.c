@@ -165,7 +165,7 @@ void process_switch_to_any()
     for (int i = 0; i < ALPHAOS_MAX_PROCESSES; i++) {
         if (processes[i] != 0) {
             current_process = processes[i];
-            break;
+            return;
         }
     }
 
